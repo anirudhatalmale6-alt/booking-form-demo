@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Bookings Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<div class="demo-bar">Demo admin · demo password: <b>admin123</b> · <a href="index.html">Back to booking form</a></div>
+
+<section id="login" class="login">
+  <form class="card" id="loginForm">
+    <div class="brand"><span class="logo" aria-hidden="true"></span><span data-company></span></div>
+    <h1>Bookings admin</h1>
+    <label class="field"><span>Password</span><input type="password" id="pw" autocomplete="current-password" required></label>
+    <small class="err" id="pwErr"></small>
+    <button class="btn primary" type="submit">Sign in</button>
+  </form>
+</section>
+
+<div id="app" class="admin" hidden>
+  <header class="a-top">
+    <div class="brand"><span class="logo" aria-hidden="true"></span><span data-company></span> <em>Admin</em></div>
+    <nav class="tabs" role="tablist">
+      <button class="on" data-tab="bookings" role="tab">Bookings</button>
+      <button data-tab="map" role="tab">Map</button>
+      <button data-tab="waitlist" role="tab">Out-of-area requests</button>
+    </nav>
+    <button class="btn ghost sm" id="logout">Sign out</button>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <section data-view="bookings">
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search name, phone, area, reference...">
+      <select id="fStatus">
+        <option value="">All statuses</option><option value="new">New</option><option value="confirmed">Confirmed</option>
+        <option value="done">Completed</option><option value="cancelled">Cancelled</option>
+      </select>
+      <select id="fWhen">
+        <option value="">Any date</option><option value="today">Today</option><option value="upcoming">Upcoming</option><option value="past">Past</option>
+      </select>
+      <button class="btn ghost sm" id="csv">Export CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table class="tbl">
+        <thead><tr><th>Ref</th><th>Customer</th><th>Area</th><th>Visit</th><th>Status</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p class="empty" id="empty" hidden>No bookings match these filters.</p>
+    </div>
+  </section>
+
+  <section data-view="map" hidden><div id="amap"></div></section>
+
+  <section data-view="waitlist" hidden>
+    <p class="muted">Customers outside the service area who asked to be notified. Useful for deciding where to expand next.</p>
+    <div class="table-wrap"><table class="tbl">
+      <thead><tr><th>Date</th><th>Customer</th><th>Address</th></tr></thead>
+      <tbody id="wrows"></tbody></table>
+      <p class="empty" id="wempty" hidden>No requests yet.</p>
+    </div>
+  </section>
+</div>
+
+<aside id="drawer" class="drawer" hidden>
+  <div class="drawer-card">
+    <button class="x" id="closeDrawer" aria-label="Close">&times;</button>
+    <div id="drawerBody"></div>
+  </div>
+</aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Book a Visit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="demo-bar">Demo preview · address search uses OpenStreetMap here, the live version uses Google Maps · <a href="admin.html">Open admin dashboard</a></div>
+
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><span data-company></span></div>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en">EN</button><button type="button" data-lang="id">ID</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1 data-t="title"></h1>
+    <p data-t="subtitle"></p>
+    <ol class="steps" aria-label="Progress">
+      <li data-step="1"><span>1</span><b data-t="step1"></b></li>
+      <li data-step="2"><span>2</span><b data-t="step2"></b></li>
+      <li data-step="3"><span>3</span><b data-t="step3"></b></li>
+    </ol>
+  </section>
+
+  <form id="bookingForm" class="card" novalidate>
+    <!-- STEP 1: contact + address -->
+    <div class="panel" data-panel="1">
+      <div class="grid2">
+        <label class="field"><span data-t="name"></span>
+          <input name="name" autocomplete="name" required>
+          <small class="err" data-err="name"></small></label>
+        <label class="field"><span data-t="phone"></span>
+          <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0812 3456 7890" required>
+          <small class="err" data-err="phone"></small></label>
+      </div>
+      <label class="field"><span data-t="email"></span>
+        <input name="email" type="email" autocomplete="email" required>
+        <small class="err" data-err="email"></small></label>
+
+      <div class="field addr">
+        <label for="addrInput" data-t="address"></label>
+        <div class="ac">
+          <input id="addrInput" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="acList" aria-autocomplete="list">
+          <span class="spin" hidden></span>
+          <ul id="acList" class="ac-list" role="listbox" hidden></ul>
+        </div>
+        <small class="help" data-t="addressHelp"></small>
+        <small class="err" data-err="address"></small>
+      </div>
+
+      <div id="mapWrap" class="map-wrap" hidden>
+        <div id="map" aria-label="Map"></div>
+        <div id="zoneMsg" class="zone-msg" role="status" aria-live="polite"></div>
+      </div>
+
+      <div id="addrFields" hidden>
+        <label class="field"><span data-t="detail"></span>
+          <input name="detail" data-ph="detailPh" required>
+          <small class="err" data-err="detail"></small></label>
+        <div class="grid3">
+          <label class="field"><span data-t="village"></span><input name="village"></label>
+          <label class="field"><span data-t="district"></span><input name="district"></label>
+          <label class="field"><span data-t="postcode"></span>
+            <input name="postcode" inputmode="numeric" maxlength="5" required>
+            <small class="err" data-err="postcode"></small></label>
+        </div>
+        <div class="grid2">
+          <label class="field"><span data-t="city"></span><input name="city" readonly></label>
+          <label class="field"><span data-t="province"></span><input name="province" readonly></label>
+        </div>
+        <p class="coords" id="coords"></p>
+      </div>
+
+      <div id="outZone" class="out-zone" hidden>
+        <h3 data-t="outZoneTitle"></h3>
+        <p data-t="outZoneBody"></p>
+        <div class="out-actions">
+          <a id="waLink" class="btn wa" target="_blank" rel="noopener"><span data-t="waBtn"></span></a>
+          <button type="button" id="notifyBtn" class="btn ghost" data-t="notifyBtn"></button>
+        </div>
+        <p id="notifyDone" class="ok-note" data-t="notifyDone" hidden></p>
+      </div>
+
+      <div class="actions"><button type="button" class="btn primary" id="toStep2" data-t="next"></button></div>
+    </div>
+
+    <!-- STEP 2: date + slot -->
+    <div class="panel" data-panel="2" hidden>
+      <div class="summary" id="addrSummary"></div>
+      <div class="field"><span class="lbl" data-t="date"></span>
+        <div class="dates" id="dates" role="radiogroup"></div>
+        <small class="err" data-err="date"></small></div>
+      <div class="field"><span class="lbl" data-t="slot"></span>
+        <div class="slots" id="slots" role="radiogroup"></div>
+        <small class="err" data-err="slot"></small></div>
+      <label class="field"><span data-t="notes"></span><textarea name="notes" rows="3"></textarea></label>
+      <div class="actions split">
+        <button type="button" class="btn ghost" id="back1" data-t="back"></button>
+        <button type="submit" class="btn primary" data-t="submit"></button>
+      </div>
+    </div>
+
+    <!-- STEP 3: done -->
+    <div class="panel done" data-panel="3" hidden>
+      <div class="tick" aria-hidden="true"></div>
+      <h2 data-t="doneTitle"></h2>
+      <p data-t="doneBody"></p>
+      <p class="ref"><span data-t="ref"></span>: <b id="refNo"></b></p>
+      <div class="summary" id="finalSummary"></div>
+      <button type="button" class="btn ghost" id="again" data-t="newBooking"></button>
+    </div>
+  </form>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/geo.js"></script>
+<script src="js/store.js"></script>
+<script src="js/form.js"></script>
+</body>
+</html>
